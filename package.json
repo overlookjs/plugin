@@ -23,17 +23,17 @@
     "@overlookmotel/eslint-config": "^6.0.1",
     "@overlookmotel/eslint-config-jest": "^3.0.1",
     "@overlookmotel/eslint-config-node": "^1.0.2",
-    "core-js-pure": "^3.6.1",
+    "core-js-pure": "^3.6.4",
     "coveralls": "^3.0.9",
     "cross-env": "^6.0.3",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-eslint-comments": "^3.1.2",
-    "eslint-plugin-import": "^2.19.1",
-    "eslint-plugin-jest": "^23.2.0",
+    "eslint-plugin-import": "^2.20.0",
+    "eslint-plugin-jest": "^23.6.0",
     "eslint-plugin-node": "^11.0.0",
     "jest": "^24.9.0",
-    "jest-extended": "^0.11.2"
+    "jest-extended": "^0.11.4"
   },
   "keywords": [
     "overlook",
