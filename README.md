@@ -1,25 +1,23 @@
-[![NPM version](https://img.shields.io/npm/v/@overlook/router.svg)](https://www.npmjs.com/package/@overlook/router)
-[![Build Status](https://img.shields.io/travis/overlookjs/router/master.svg)](http://travis-ci.org/overlookjs/router)
-[![Dependency Status](https://img.shields.io/david/overlookjs/router.svg)](https://david-dm.org/overlookjs/router)
-[![Dev dependency Status](https://img.shields.io/david/dev/overlookjs/router.svg)](https://david-dm.org/overlookjs/router)
-[![Greenkeeper badge](https://badges.greenkeeper.io/overlookjs/router.svg)](https://greenkeeper.io/)
-[![Coverage Status](https://img.shields.io/coveralls/overlookjs/router/master.svg)](https://coveralls.io/r/overlookjs/router)
+[![NPM version](https://img.shields.io/npm/v/@overlook/plugin.svg)](https://www.npmjs.com/package/@overlook/plugin)
+[![Build Status](https://img.shields.io/travis/overlookjs/plugin/master.svg)](http://travis-ci.org/overlookjs/plugin)
+[![Dependency Status](https://img.shields.io/david/overlookjs/plugin.svg)](https://david-dm.org/overlookjs/plugin)
+[![Dev dependency Status](https://img.shields.io/david/dev/overlookjs/plugin.svg)](https://david-dm.org/overlookjs/plugin)
+[![Greenkeeper badge](https://badges.greenkeeper.io/overlookjs/plugin.svg)](https://greenkeeper.io/)
+[![Coverage Status](https://img.shields.io/coveralls/overlookjs/plugin/master.svg)](https://coveralls.io/r/overlookjs/plugin)
 
-# Overlook framework Router class
+# Overlook framework Plugin class
 
 Part of the [Overlook framework](https://overlookjs.github.io/).
 
 ## Introduction
 
-[Overlook framework](https://overlookjs.github.io/) `Router` class. Route class extensions (otherwise known as "Routers") should be created with this class.
+[Overlook framework](https://overlookjs.github.io/) `Plugin` class. Plugins should be created with this class.
 
 Overlook is intended to be extremely modular and flexible.
 
-The base `Route` class has very little functionality, and most functionality is intended to be added using Routers.
+The base `Route` class has very little functionality, and most functionality is intended to be added using plugins.
 
-Extensions (or "Routers") are much like "plugins", which other frameworks use, but the main difference is this:
-
-> Route class extensions apply at the route level, not application level.
+Plugins apply per route, not at application level.
 
 One route, or subtree of routes, can have one behavior, another subtree can have another. So, for example, one part of the app can use [React](https://reactjs.org/), another part can server-render pages from [EJS](https://ejs.co/) templates.
 
@@ -30,19 +28,19 @@ This architecture allows:
 
 ## Usage
 
-### Creating a Router
+### Creating a plugin
 
-A Router is created from a function which receives a `Route` class and should return a subclass of it.
+A plugin is created from a function which receives a `Route` class and should return a subclass of it.
 
 ```js
-const Router = require('@overlook/router'),
+const Plugin = require('@overlook/plugin'),
   makeSymbols = require('@overlook/util-make-symbols');
 
 const { TYPE, GREETING } = makeSymbols(
   [ 'TYPE', 'GREETING' ]
 );
 
-const mammalRouter = new Router( Route => (
+const mammalPlugin = new Plugin( Route => (
   class extends Route {
     initProps( props ) {
       super.initProps( props );
@@ -60,46 +58,46 @@ const mammalRouter = new Router( Route => (
   }
 ) );
 
-mammalRouter.TYPE = TYPE;
-mammalRouter.GREETING = GREETING;
+mammalPlugin.TYPE = TYPE;
+mammalPlugin.GREETING = GREETING;
 ```
 
-New methods and properties should have Symbol keys, not strings. If properties are intended to be accessed by other Routers, or methods intended to be available for extending, the Symbol should be exported as a property of the Router.
+New methods and properties should have Symbol keys, not strings. If properties are intended to be accessed by other plugins, or methods intended to be available for extending, the Symbol should be exported as a property of the `Plugin` object.
 
-The Router can than be used create a subclass of a `Route` class, using `.extend()`:
+The plugin can than be used create a subclass of a `Route` class, using `.extend()`:
 
 ```js
 const Route = require('@overlook/route');
 
-const MammalRoute = Route.extend( mammalRouter );
+const MammalRoute = Route.extend( mammalPlugin );
 ```
 
-That subclass can now be used to create a route which includes the Router's functionality:
+That subclass can now be used to create a route which includes the plugin's functionality:
 
 ```js
 const route = new MammalRoute();
 
-route[ mammalRouter.GREETING ]()
+route[ mammalPlugin.GREETING ]()
 // => 'Hello, I am a mammal.'
 ```
 
 ### Removing Symbols boilerplate
 
-It's typical for a Router to define Symbols.
+It's typical for a plugin to define Symbols.
 
-To reduce boilerplate code, you can create Symbols within the Router constructor.
+To reduce boilerplate code, you can create Symbols within the `Plugin` constructor.
 
 This example is equivalent to the first:
 
 ```js
-const Router = require('@overlook/router');
+const Plugin = require('@overlook/plugin');
 
-const mammalRouter = new Router( {
+const mammalPlugin = new Plugin( {
   symbols: [ 'TYPE', 'GREETING' ],
   extend
 } );
 
-const { TYPE, GREETING } = mammalRouter;
+const { TYPE, GREETING } = mammalPlugin;
 
 function extend( Route ) (
   class extends Route {
@@ -120,19 +118,19 @@ function extend( Route ) (
 }
 ```
 
-Note that the symbols were set as properties of `mammalRouter`.
+Note that the symbols were set as properties of `mammalPlugin`.
 
-### Publishing a Router to NPM
+### Publishing a plugin to NPM
 
-`new Router()` has a few more options which should be used when publishing a Router to NPM.
+`new Plugin()` has a few more options which should be used when publishing a plugin to NPM.
 
 1. You should pass in the name and version of the module.
-2. Symbols *must* be created using either `@overlook/util-make-symbols` or the `Router` constructor.
+2. Symbols *must* be created using either `@overlook/util-make-symbols` or the `Plugin` constructor.
 
 ```js
 // Published as `@me/monkey`
 // version 1.0.0
-const Router = require('@overlook/router'),
+const Plugin = require('@overlook/plugin'),
   makeSymbols = require('@overlook/util-make-symbols');
 
 const { GREETING } = makeSymbols(
@@ -140,7 +138,7 @@ const { GREETING } = makeSymbols(
   [ 'GREETING' ]
 );
 
-const monkeyRouter = new Router(
+const monkeyPlugin = new Plugin(
   {
     name: '@me/monkey',
     version: '1.0.0'
@@ -148,38 +146,38 @@ const monkeyRouter = new Router(
   Route => class extends Route { /* ... */ }
 );
 
-module.exports = monkeyRouter;
+module.exports = monkeyPlugin;
 ```
 
 The options object has the same properties as `package.json` so, to avoid having to update the version property every time you publish a new version of the module, you can pass that instead.
 
-It's also more economical to create symbols in `new Router()`, to avoid passing the package name to `makeSymbols()` too:
+It's also more economical to create symbols in `new Plugin()`, to avoid passing the package name to `makeSymbols()` too:
 
 ```js
 const pkg = require('./package.json');
 
-const monkeyRouter = new Router(
+const monkeyPlugin = new Plugin(
   pkg,
   { symbols: [ 'GREETING' ] },
   Route => class extends Route { /* ... */ }
 );
 
-module.exports = monkeyRouter;
+module.exports = monkeyPlugin;
 ```
 
 ### Longer example including using symbols
 
 ```js
-const Router = require('@overlook/router');
+const Plugin = require('@overlook/plugin');
 const pkg = require('./package.json');
 
-const monkeyRouter = new Router(
+const monkeyPlugin = new Plugin(
   pkg,
   { symbols: [ 'GREETING' ] },
   extend
 );
 
-const { GREETING } = monkeyRouter;
+const { GREETING } = monkeyPlugin;
 
 function extend( Route ) {
   return class extends Route {
@@ -189,24 +187,24 @@ function extend( Route ) {
   };
 }
 
-module.exports = monkeyRouter;
+module.exports = monkeyPlugin;
 ```
 
-### Composing Routers
+### Composing plugins
 
-Routers can extend other Routers.
+Plugins can extend other plugins.
 
-Let's say we have various routes which need a "greeting" method. This functionality can be split off into its own Router.
+Let's say we have various routes which need a "greeting" method. This functionality can be split off into its own plugin.
 
 ```js
-const Router = require('@overlook/router');
+const Plugin = require('@overlook/plugin');
 
-const typeRouter = new Router(
+const typePlugin = new Plugin(
   { symbols: [ 'TYPE', 'GET_TYPE', 'GREETING' ] },
   extend
 } );
 
-const { TYPE, GET_TYPE, GREETING } = typeRouter;
+const { TYPE, GET_TYPE, GREETING } = typePlugin;
 
 function extend( Route ) (
   class extends Route {
@@ -231,14 +229,14 @@ function extend( Route ) (
 }
 ```
 
-Now other Routers can extend off that:
+Now other plugins can extend off that:
 
 ```js
-const { GET_TYPE } = typeRouter;
+const { GET_TYPE } = typePlugin;
 
-const monkeyRouter = new Router(
+const monkeyPlugin = new Plugin(
   Route => {
-    Route = Route.extend( typeRouter );
+    Route = Route.extend( typePlugin );
 
     return class extends Route {
       [GET_TYPE]() {
@@ -248,9 +246,9 @@ const monkeyRouter = new Router(
   }
 );
 
-const zebraRouter = new Router(
+const zebraPlugin = new Plugin(
   Route => {
-    Route = Route.extend( typeRouter );
+    Route = Route.extend( typePlugin );
 
     return class extends Route {
       [GET_TYPE]() {
@@ -260,12 +258,12 @@ const zebraRouter = new Router(
   }
 );
 
-const MonkeyRoute = Route.extend( monkeyRouter );
+const MonkeyRoute = Route.extend( monkeyPlugin );
 const monkey = new MonkeyRoute();
 monkey[GREETNG]()
 // => 'Hello, I am a monkey.'
 
-const ZebraRoute = Route.extend( zebraRouter );
+const ZebraRoute = Route.extend( zebraPlugin );
 const zebra = new ZebraRoute();
 zebra[GREETNG]()
 // => 'Hello, I am a zebra.'
@@ -283,11 +281,11 @@ Use `npm test` to run the tests. Use `npm run cover` to check coverage.
 
 ## Changelog
 
-See [changelog.md](https://github.com/overlookjs/router/blob/master/changelog.md)
+See [changelog.md](https://github.com/overlookjs/plugin/blob/master/changelog.md)
 
 ## Issues
 
-If you discover a bug, please raise an issue on Github. https://github.com/overlookjs/router/issues
+If you discover a bug, please raise an issue on Github. https://github.com/overlookjs/plugin/issues
 
 ## Contribution
 

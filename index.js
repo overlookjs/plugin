@@ -1,5 +1,5 @@
 /* --------------------
- * @overlook/router module
+ * @overlook/plugin module
  * ------------------*/
 
 'use strict';

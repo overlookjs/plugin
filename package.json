@@ -1,17 +1,17 @@
 {
-  "name": "@overlook/router",
+  "name": "@overlook/plugin",
   "version": "0.1.2",
-  "description": "Overlook framework Router class",
+  "description": "Overlook framework Plugin class",
   "main": "index.js",
   "author": {
     "name": "Overlook Motel"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/overlookjs/router.git"
+    "url": "https://github.com/overlookjs/plugin.git"
   },
   "bugs": {
-    "url": "https://github.com/overlookjs/router/issues"
+    "url": "https://github.com/overlookjs/plugin/issues"
   },
   "dependencies": {
     "@overlook/util-make-symbols": "^0.2.0",
@@ -37,7 +37,7 @@
   },
   "keywords": [
     "overlook",
-    "router"
+    "plugin"
   ],
   "scripts": {
     "test": "npm run lint && npm run test-main",

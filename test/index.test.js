@@ -1,5 +1,5 @@
 /* --------------------
- * @overlook/router module
+ * @overlook/plugin module
  * Tests
  * ------------------*/
 
@@ -9,7 +9,7 @@
 const store = require('@overlook/symbol-store'),
 	{isArray} = require('is-it-type'),
 	flatMap = require('core-js-pure/features/array/flat-map'),
-	Router = require('../index');
+	Plugin = require('../index');
 
 // Tests
 
@@ -23,12 +23,12 @@ beforeEach(() => {
 });
 
 it('exports a class', () => {
-	expect(Router).toBeFunction();
+	expect(Plugin).toBeFunction();
 });
 
-it('creates a Router instance', () => {
-	const router = new Router(() => {});
-	expect(router).toBeInstanceOf(Router);
+it('creates a Plugin instance', () => {
+	const plugin = new Plugin(() => {});
+	expect(plugin).toBeInstanceOf(Plugin);
 });
 
 describe('records arguments', () => {
@@ -41,24 +41,24 @@ describe('records arguments', () => {
 
 	for (const argsStr of argsStrs) {
 		describe(argsStr, () => {
-			let router, extend;
+			let plugin, extend;
 			beforeEach(() => {
 				extend = () => {};
 				const createArgs = makeCreateArgsFn(argsStr);
 				const args = createArgs('foo', '1.0.0', extend);
-				router = new Router(...args);
+				plugin = new Plugin(...args);
 			});
 
 			it('records name', () => {
-				expect(router.name).toBe('foo');
+				expect(plugin.name).toBe('foo');
 			});
 
 			it('records version', () => {
-				expect(router.version).toBe('1.0.0');
+				expect(plugin.version).toBe('1.0.0');
 			});
 
 			it('records extend function', () => {
-				expect(router.extend).toBe(extend);
+				expect(plugin.extend).toBe(extend);
 			});
 		});
 	}
@@ -83,7 +83,7 @@ describe('creates symbols', () => {
 
 				it('returns symbols', () => {
 					const args = createArgs(['BAR', 'QUX']);
-					const {BAR, QUX} = new Router(...args);
+					const {BAR, QUX} = new Plugin(...args);
 					expect(typeof BAR).toBe('symbol');
 					expect(String(BAR)).toBe('Symbol(BAR)');
 					expect(typeof QUX).toBe('symbol');
@@ -92,14 +92,14 @@ describe('creates symbols', () => {
 
 				it('does not cache symbols', () => {
 					const args1 = createArgs(['BAR']);
-					const router1 = new Router(...args1);
+					const plugin1 = new Plugin(...args1);
 
 					const args2 = createArgs(['BAR']);
-					const router2 = new Router(...args2);
+					const plugin2 = new Plugin(...args2);
 
-					expect(typeof router1.BAR).toBe('symbol');
-					expect(typeof router2.BAR).toBe('symbol');
-					expect(router1.BAR).not.toBe(router2.BAR);
+					expect(typeof plugin1.BAR).toBe('symbol');
+					expect(typeof plugin2.BAR).toBe('symbol');
+					expect(plugin1.BAR).not.toBe(plugin2.BAR);
 				});
 			});
 		}
@@ -123,7 +123,7 @@ describe('creates symbols', () => {
 
 				it('returns symbols', () => {
 					const args = createArgs(['BAR', 'QUX']);
-					const {BAR, QUX} = new Router(...args);
+					const {BAR, QUX} = new Plugin(...args);
 					expect(typeof BAR).toBe('symbol');
 					expect(String(BAR)).toBe('Symbol(foo.BAR)');
 					expect(typeof QUX).toBe('symbol');
@@ -132,14 +132,14 @@ describe('creates symbols', () => {
 
 				it('caches symbols', () => {
 					const args1 = createArgs(['BAR']);
-					const router1 = new Router(...args1);
+					const plugin1 = new Plugin(...args1);
 
 					const args2 = createArgs(['BAR']);
-					const router2 = new Router(...args2);
+					const plugin2 = new Plugin(...args2);
 
-					expect(typeof router1.BAR).toBe('symbol');
-					expect(typeof router2.BAR).toBe('symbol');
-					expect(router1.BAR).toBe(router2.BAR);
+					expect(typeof plugin1.BAR).toBe('symbol');
+					expect(typeof plugin2.BAR).toBe('symbol');
+					expect(plugin1.BAR).toBe(plugin2.BAR);
 				});
 			});
 		}
