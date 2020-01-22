@@ -34,7 +34,8 @@ A plugin is created from a function which receives a `Route` class and should re
 
 ```js
 const Plugin = require('@overlook/plugin'),
-  makeSymbols = require('@overlook/util-make-symbols');
+  makeSymbols = require('@overlook/util-make-symbols'),
+  { INIT_PROPS, INIT_ROUTE } = require('@overlook/route');
 
 const { TYPE, GREETING } = makeSymbols(
   [ 'TYPE', 'GREETING' ]
@@ -42,13 +43,13 @@ const { TYPE, GREETING } = makeSymbols(
 
 const mammalPlugin = new Plugin( Route => (
   class extends Route {
-    initProps( props ) {
-      super.initProps( props );
+    [INIT_PROPS]( props ) {
+      super[INIT_PROPS]( props );
       this[TYPE] = undefined;
     }
 
-    initRoute( app ) {
-      super.initRoute( app );
+    [INIT_ROUTE]( app ) {
+      super[INIT_ROUTE]( app );
       if (this[TYPE] === undefined) this[TYPE] = 'mammal';
     }
 
@@ -90,7 +91,8 @@ To reduce boilerplate code, you can create Symbols within the `Plugin` construct
 This example is equivalent to the first:
 
 ```js
-const Plugin = require('@overlook/plugin');
+const Plugin = require('@overlook/plugin'),
+  { INIT_PROPS, INIT_ROUTE } = require('@overlook/route');
 
 const mammalPlugin = new Plugin( {
   symbols: [ 'TYPE', 'GREETING' ],
@@ -101,13 +103,13 @@ const { TYPE, GREETING } = mammalPlugin;
 
 function extend( Route ) (
   class extends Route {
-    initProps( props ) {
-      super.initProps( props );
+    [INIT_PROPS]( props ) {
+      super[INIT_PROPS]( props );
       this[TYPE] = undefined;
     }
 
-    initRoute( app ) {
-      super.initRoute( app );
+    [INIT_ROUTE]( app ) {
+      super[INIT_ROUTE]( app );
       if (this[TYPE] === undefined) this[TYPE] = 'mammal';
     }
 
@@ -197,7 +199,8 @@ Plugins can extend other plugins.
 Let's say we have various routes which need a "greeting" method. This functionality can be split off into its own plugin.
 
 ```js
-const Plugin = require('@overlook/plugin');
+const Plugin = require('@overlook/plugin'),
+  { INIT_PROPS, INIT_ROUTE } = require('@overlook/route');
 
 const typePlugin = new Plugin(
   { symbols: [ 'TYPE', 'GET_TYPE', 'GREETING' ] },
@@ -208,13 +211,13 @@ const { TYPE, GET_TYPE, GREETING } = typePlugin;
 
 function extend( Route ) (
   class extends Route {
-    initProps( props ) {
-      super.initProps( props );
+    [INIT_PROPS]( props ) {
+      super[INIT_PROPS]( props );
       this[TYPE] = undefined;
     }
 
-    initRoute( app ) {
-      super.initRoute( app );
+    [INIT_ROUTE]( app ) {
+      super[INIT_ROUTE]( app );
       this[TYPE] = this[GET_TYPE]();
     }
 
