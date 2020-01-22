@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.2.1
+
+No code:
+
+* Code comments
+
+Dev:
+
+* Update dev dependencies
+
+Docs:
+
+* README update
+
 ## 0.2.0
 
 Breaking changes:
