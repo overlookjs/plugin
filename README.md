@@ -23,7 +23,7 @@ One route, or subtree of routes, can have one behavior, another subtree can have
 
 This architecture allows:
 
-1. "Snap in" extensions providing common functionality, making building apps fast
+1. "Snap in" plugins providing common functionality, making building apps fast
 2. Granular control over every route's individual behavior
 
 ## Usage
