@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.2
+
+Docs:
+
+* Update README for changes in `@overlook/route` v0.4.0
+
 ## 0.2.1
 
 No code:
