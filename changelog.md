@@ -1,5 +1,35 @@
 # Changelog
 
+## 0.2.3
+
+Refactor:
+
+* Fully specify require file paths
+
+Dependencies:
+
+* Update `class-extension` dependency
+* Update `is-it-type` dependency
+
+No code:
+
+* File header comments
+
+Tests:
+
+* Run tests in dev mode
+* Import from package name [refactor]
+
+Dev:
+
+* Update dev dependencies
+* Run tests on CI on Node v14
+* `.editorconfig` config
+* Replace `.npmignore` with `files` list in `package.json`
+* Simplify Jest config
+* ESLint lint dot files
+* Remove unnecessary line from `.gitignore`
+
 ## 0.2.2
 
 Docs:
