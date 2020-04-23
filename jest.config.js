@@ -18,5 +18,8 @@ module.exports = {
 		'!test/**',
 		'!jest.config.js'
 	],
-	setupFilesAfterEnv: ['jest-extended']
+	setupFilesAfterEnv: ['jest-extended'],
+	moduleNameMapper: {
+		'^@overlook/plugin$': '<rootDir>/index.js'
+	}
 };

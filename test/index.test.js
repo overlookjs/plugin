@@ -9,7 +9,7 @@
 const store = require('@overlook/symbol-store'),
 	{isArray} = require('is-it-type'),
 	flatMap = require('core-js-pure/features/array/flat-map'),
-	Plugin = require('../index.js');
+	Plugin = require('@overlook/plugin');
 
 // Tests
 
