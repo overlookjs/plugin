@@ -3,6 +3,9 @@
   "version": "0.2.2",
   "description": "Overlook framework Plugin class",
   "main": "index.js",
+  "files": [
+    "lib/**/*.js"
+  ],
   "author": {
     "name": "Overlook Motel"
   },
