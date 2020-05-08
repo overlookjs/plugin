@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.2.4
+
+Features:
+
+* ESM export
+
+Dependencies:
+
+* Update `is-it-type` dependency
+
+Dev:
+
+* Update dev dependencies
+
 ## 0.2.3
 
 Refactor:
