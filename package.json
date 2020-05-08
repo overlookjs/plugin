@@ -19,7 +19,7 @@
   "dependencies": {
     "@overlook/util-make-symbols": "^0.2.0",
     "class-extension": "^0.2.1",
-    "is-it-type": "^3.1.1"
+    "is-it-type": "^4.0.0"
   },
   "devDependencies": {
     "@overlook/symbol-store": "^1.0.0",
