@@ -11,9 +11,19 @@
 // Exports
 
 module.exports = function itExports(Route) {
-	it.each([
-		'PLUGIN_VERSION'
-	])('%s', (key) => {
-		expect(typeof Route[key]).toBe('symbol');
+	describe('methods', () => {
+		it.each([
+			'isPlugin'
+		])('%s', (key) => {
+			expect(Route[key]).toBeFunction();
+		});
+	});
+
+	describe('symbols', () => {
+		it.each([
+			'PLUGIN_VERSION'
+		])('%s', (key) => {
+			expect(typeof Route[key]).toBe('symbol');
+		});
 	});
 };
