@@ -272,6 +272,17 @@ zebra[GREETNG]()
 // => 'Hello, I am a zebra.'
 ```
 
+### `isPlugin()` static method
+
+`isPlugin()` returns `true` if input is a Plugin.
+
+```js
+const Plugin = require('@overlook/plugin');
+const plugin = new Plugin( () => {} );
+
+Plugin.isPlugin( plugin ) // => true
+```
+
 ## Versioning
 
 This module follows [semver](https://semver.org/). Breaking changes will only be made in major version updates.
