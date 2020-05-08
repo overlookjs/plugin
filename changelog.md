@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.5
+
+Features:
+
+* `isPlugin` static method
+
 ## 0.2.4
 
 Features:

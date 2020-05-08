@@ -1,6 +1,6 @@
 {
   "name": "@overlook/plugin",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Overlook framework Plugin class",
   "main": "index.js",
   "module": "es/index.js",
