@@ -3,9 +3,19 @@
   "version": "0.2.3",
   "description": "Overlook framework Plugin class",
   "main": "index.js",
+  "module": "es/index.js",
+  "exports": {
+    ".": {
+      "import": "./es/index.js",
+      "require": "./index.js"
+    },
+    "./es": "./es/index.js"
+  },
   "files": [
-    "lib/**/*.js"
+    "lib/**/*.js",
+    "es/**/*.js"
   ],
+  "sideEffects": false,
   "author": {
     "name": "Overlook Motel"
   },
@@ -36,7 +46,8 @@
     "eslint-plugin-jest": "^23.9.0",
     "eslint-plugin-node": "^11.1.0",
     "jest": "^26.0.1",
-    "jest-extended": "^0.11.5"
+    "jest-extended": "^0.11.5",
+    "parse-node-version": "^1.0.1"
   },
   "keywords": [
     "overlook",
@@ -46,7 +57,7 @@
     "test": "npm run lint && npm run test-main",
     "lint": "eslint '*.js' '.*.js' '**/*.js' '**/.*.js'",
     "lint-fix": "eslint '*.js' '.*.js' '**/*.js' '**/.*.js' --fix",
-    "test-main": "jest",
+    "test-main": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "cover": "npm run cover-main && rm -rf coverage",
     "coveralls": "npm run cover-main && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
     "cover-main": "cross-env COVERAGE=true jest --coverage",
