@@ -280,7 +280,7 @@ zebra[GREETNG]()
 const Plugin = require('@overlook/plugin');
 const plugin = new Plugin( () => {} );
 
-Plugin.isPlugin( plugin ) // => true
+Plugin.isPlugin( plugin ) // -> true
 ```
 
 ## Versioning
