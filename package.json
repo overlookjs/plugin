@@ -58,6 +58,7 @@
     "lint": "eslint . --ext 'js,mjs'",
     "lint-fix": "eslint . --ext 'js,mjs' --fix",
     "test-main": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test-prod": "cross-env NODE_ENV=production npm run test-main",
     "cover": "npm run cover-main && rm -rf coverage",
     "coveralls": "npm run cover-main && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
     "cover-main": "cross-env COVERAGE=true node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
