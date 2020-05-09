@@ -55,8 +55,8 @@
   ],
   "scripts": {
     "test": "npm run lint && npm run test-main",
-    "lint": "eslint '*.js' '.*.js' '**/*.js' '**/.*.js'",
-    "lint-fix": "eslint '*.js' '.*.js' '**/*.js' '**/.*.js' --fix",
+    "lint": "eslint . --ext 'js,mjs'",
+    "lint-fix": "eslint . --ext 'js,mjs' --fix",
     "test-main": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "cover": "npm run cover-main && rm -rf coverage",
     "coveralls": "npm run cover-main && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
