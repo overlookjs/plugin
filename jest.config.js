@@ -15,7 +15,7 @@ const supportsEsm = parseNodeVersion(process.version).major >= 13;
 module.exports = {
 	testEnvironment: 'node',
 	coverageDirectory: 'coverage',
-	collectCoverageFrom: ['index.js', 'lib/**/*.js'],
+	collectCoverageFrom: ['index.js', 'lib/**/*.js', 'es/**/*.js'],
 	setupFilesAfterEnv: ['jest-extended'],
 	moduleNameMapper: {
 		'^@overlook/plugin($|/.*)': '<rootDir>$1'
