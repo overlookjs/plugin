@@ -10,12 +10,12 @@
 
 // Exports
 
-module.exports = function itExports(Route) {
+module.exports = function itExports(Plugin) {
 	describe('methods', () => {
 		it.each([
 			'isPlugin'
 		])('%s', (key) => {
-			expect(Route[key]).toBeFunction();
+			expect(Plugin[key]).toBeFunction();
 		});
 	});
 
@@ -23,7 +23,7 @@ module.exports = function itExports(Route) {
 		it.each([
 			'PLUGIN_VERSION'
 		])('%s', (key) => {
-			expect(typeof Route[key]).toBe('symbol');
+			expect(typeof Plugin[key]).toBe('symbol');
 		});
 	});
 };
