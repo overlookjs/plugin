@@ -244,7 +244,7 @@ const monkeyPlugin = new Plugin(
     return class extends Route {
       [GET_TYPE]() {
         return 'monkey';
-	  }
+      }
     };
   }
 );
@@ -256,7 +256,7 @@ const zebraPlugin = new Plugin(
     return class extends Route {
       [GET_TYPE]() {
         return 'zebra';
-	  }
+      }
     };
   }
 );
