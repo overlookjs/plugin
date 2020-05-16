@@ -27,7 +27,7 @@
     "url": "https://github.com/overlookjs/plugin/issues"
   },
   "dependencies": {
-    "@overlook/util-make-symbols": "^0.2.0",
+    "@overlook/util-make-symbols": "^0.2.2",
     "class-extension": "^0.2.4",
     "is-it-type": "^4.0.0"
   },
