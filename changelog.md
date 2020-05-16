@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.2.7
+
+Dependencies:
+
+* Update `class-extension` dependency
+* Update `@overlook/util-make-symbols` dependency
+
+Tests:
+
+* Rename var [refactor]
+* Code coverage cover ESM export
+
+Dev:
+
+* Update dev dependencies
+* Lint `.mjs` files
+* `test-prod` NPM script
+
+Docs:
+
+* Fix example formatting
+
 ## 0.2.6
 
 Docs:
