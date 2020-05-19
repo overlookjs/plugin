@@ -86,7 +86,7 @@ route[ mammalPlugin.GREETING ]()
 
 It's typical for a plugin to define Symbols.
 
-To reduce boilerplate code, you can create Symbols within the `Plugin` constructor.
+To reduce boilerplate code, you can create Symbols within the `Plugin` constructor. The plugin is passed to `extend()` as 2nd arg, so you can access the symbols from there.
 
 This example is equivalent to the first:
 
@@ -94,15 +94,9 @@ This example is equivalent to the first:
 const Plugin = require('@overlook/plugin'),
   { INIT_PROPS, INIT_ROUTE } = require('@overlook/route');
 
-const mammalPlugin = new Plugin( {
-  symbols: [ 'TYPE', 'GREETING' ],
-  extend
-} );
-
-const { TYPE, GREETING } = mammalPlugin;
-
-function extend( Route ) (
-  class extends Route {
+const mammalPlugin = new Plugin(
+  { symbols: [ 'TYPE', 'GREETING' ] },
+  ( Route, { TYPE, GREETING } ) => class extends Route {
     [INIT_PROPS]( props ) {
       super[INIT_PROPS]( props );
       this[TYPE] = undefined;
@@ -117,33 +111,28 @@ function extend( Route ) (
       return `Hello, I am a ${this[TYPE]}.`;
     }
   }
-}
+);
 ```
 
-Note that the symbols were set as properties of `mammalPlugin`.
+The symbols are also automatically set as properties of `mammalPlugin`.
 
 ### Publishing a plugin to NPM
 
 `new Plugin()` has a few more options which should be used when publishing a plugin to NPM.
 
-1. You should pass in the name and version of the module.
+1. You should provide the name and version of the module.
 2. Symbols *must* be created using either `@overlook/util-make-symbols` or the `Plugin` constructor.
 
 ```js
 // Published as `@me/monkey`
 // version 1.0.0
-const Plugin = require('@overlook/plugin'),
-  makeSymbols = require('@overlook/util-make-symbols');
-
-const { GREETING } = makeSymbols(
-  '@me/monkey',
-  [ 'GREETING' ]
-);
+const Plugin = require('@overlook/plugin');
 
 const monkeyPlugin = new Plugin(
   {
     name: '@me/monkey',
-    version: '1.0.0'
+    version: '1.0.0',
+    symbols: [ 'GREETING' ]
   },
   Route => class extends Route { /* ... */ }
 );
@@ -153,8 +142,6 @@ module.exports = monkeyPlugin;
 
 The options object has the same properties as `package.json` so, to avoid having to update the version property every time you publish a new version of the module, you can pass that instead.
 
-It's also more economical to create symbols in `new Plugin()`, to avoid passing the package name to `makeSymbols()` too:
-
 ```js
 const pkg = require('./package.json');
 
@@ -163,11 +150,9 @@ const monkeyPlugin = new Plugin(
   { symbols: [ 'GREETING' ] },
   Route => class extends Route { /* ... */ }
 );
-
-module.exports = monkeyPlugin;
 ```
 
-### Longer example including using symbols
+#### Longer example including using symbols
 
 ```js
 const Plugin = require('@overlook/plugin');
@@ -176,20 +161,12 @@ const pkg = require('./package.json');
 const monkeyPlugin = new Plugin(
   pkg,
   { symbols: [ 'GREETING' ] },
-  extend
-);
-
-const { GREETING } = monkeyPlugin;
-
-function extend( Route ) {
-  return class extends Route {
+  ( Route, { GREETING } ) => class extends Route {
     [GREETING]() {
       return 'Hello, I am a monkey.';
     }
-  };
-}
-
-module.exports = monkeyPlugin;
+  }
+);
 ```
 
 ### Composing plugins
@@ -204,13 +181,7 @@ const Plugin = require('@overlook/plugin'),
 
 const greetingPlugin = new Plugin(
   { symbols: [ 'TYPE', 'GET_TYPE', 'GREETING' ] },
-  extend
-} );
-
-const { TYPE, GET_TYPE, GREETING } = greetingPlugin;
-
-function extend( Route ) (
-  class extends Route {
+  ( Route, { TYPE, GET_TYPE, GREETING } ) => class extends Route {
     [INIT_PROPS]( props ) {
       super[INIT_PROPS]( props );
       this[TYPE] = undefined;
@@ -229,7 +200,7 @@ function extend( Route ) (
       return `Hello, I am a ${this[TYPE]}.`;
     }
   }
-}
+} );
 ```
 
 Now other plugins can extend off that:
@@ -237,29 +208,23 @@ Now other plugins can extend off that:
 ```js
 const { GET_TYPE } = greetingPlugin;
 
-const monkeyPlugin = new Plugin(
-  Route => {
-    Route = Route.extend( greetingPlugin );
-
-    return class extends Route {
-      [GET_TYPE]() {
-        return 'monkey';
-      }
-    };
+const monkeyPlugin = new Plugin( {
+  extends: [ greetingPlugin ],
+  extend: Route => class extends Route {
+    [GET_TYPE]() {
+      return 'monkey';
+    }
   }
-);
+} );
 
-const zebraPlugin = new Plugin(
-  Route => {
-    Route = Route.extend( greetingPlugin );
-
-    return class extends Route {
-      [GET_TYPE]() {
-        return 'zebra';
-      }
-    };
+const zebraPlugin = new Plugin( {
+  extends: [ greetingPlugin ],
+  extend: Route => class extends Route {
+    [GET_TYPE]() {
+      return 'zebra';
+    }
   }
-);
+} );
 
 const MonkeyRoute = Route.extend( monkeyPlugin );
 const monkey = new MonkeyRoute();

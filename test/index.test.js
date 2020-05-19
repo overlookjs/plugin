@@ -32,20 +32,21 @@ it('creates a Plugin instance', () => {
 });
 
 describe('records arguments', () => {
-	const argsStrs = makeArgStrings(['name', 'version', 'extend']);
+	const argsStrs = makeArgStrings(['name', 'version', 'extend', 'extends']);
 
 	// Sanity check - check tests are covering all possibilities
 	it('tests cover all possibilities', () => {
-		expect(argsStrs).toHaveLength(28);
+		expect(argsStrs).toHaveLength(237);
 	});
 
 	for (const argsStr of argsStrs) {
 		describe(argsStr, () => {
-			let plugin, extend;
+			let plugin, extend, _extends;
 			beforeEach(() => {
 				extend = () => {};
+				_extends = [];
 				const createArgs = makeCreateArgsFn(argsStr);
-				const args = createArgs('foo', '1.0.0', extend);
+				const args = createArgs('foo', '1.0.0', extend, _extends);
 				plugin = new Plugin(...args);
 			});
 
@@ -60,17 +61,21 @@ describe('records arguments', () => {
 			it('records extend function', () => {
 				expect(plugin.extend).toBe(extend);
 			});
+
+			it('records extends array', () => {
+				expect(plugin.extends).toBe(_extends);
+			});
 		});
 	}
 });
 
 describe('creates symbols', () => {
 	describe('with no name, when arguments', () => {
-		const argsStrs = makeArgStrings(['symbols', 'extend']);
+		const argsStrs = makeArgStrings(['symbols', 'extend', 'extends']);
 
 		// Sanity check - check tests are covering all possibilities
 		it('tests cover all possibilities', () => {
-			expect(argsStrs).toHaveLength(5);
+			expect(argsStrs).toHaveLength(35);
 		});
 
 		for (const argsStr of argsStrs) {
@@ -78,7 +83,7 @@ describe('creates symbols', () => {
 				let createArgs;
 				beforeEach(() => {
 					const createArgsFull = makeCreateArgsFn(argsStr);
-					createArgs = symbols => createArgsFull(null, null, () => {}, symbols);
+					createArgs = symbols => createArgsFull(null, null, () => {}, [], symbols);
 				});
 
 				it('returns symbols', () => {
@@ -106,11 +111,11 @@ describe('creates symbols', () => {
 	});
 
 	describe('with name, when arguments', () => {
-		const argsStrs = makeArgStrings(['name', 'version', 'symbols', 'extend']);
+		const argsStrs = makeArgStrings(['name', 'version', 'symbols', 'extend', 'extends']);
 
 		// Sanity check - check tests are covering all possibilities
 		it('tests cover all possibilities', () => {
-			expect(argsStrs).toHaveLength(145);
+			expect(argsStrs).toHaveLength(1583);
 		});
 
 		for (const argsStr of argsStrs) {
@@ -118,7 +123,7 @@ describe('creates symbols', () => {
 				let createArgs;
 				beforeEach(() => {
 					const createArgsFull = makeCreateArgsFn(argsStr);
-					createArgs = symbols => createArgsFull('foo', '1.0.0', () => {}, symbols);
+					createArgs = symbols => createArgsFull('foo', '1.0.0', () => {}, [], symbols);
 				});
 
 				it('returns symbols', () => {
@@ -147,8 +152,16 @@ describe('creates symbols', () => {
 });
 
 function makeCreateArgsFn(argsStr) {
+	// Work around `extends` being an illegal var name - prefix with '_'
+	argsStr = argsStr.replace(
+		/(^|, )extends/,
+		(_ignore, prefix) => `${prefix}_extends`
+	).replace(
+		/(\{(?:[a-z]+, )*)_?extends/,
+		(_ignore, prefix) => `${prefix}extends: _extends`
+	);
 	// eslint-disable-next-line no-eval
-	return eval(`(name, version, extend, symbols) => [${argsStr}]`);
+	return eval(`(name, version, extend, _extends, symbols) => [${argsStr}]`);
 }
 
 function makeArgStrings(names) {
