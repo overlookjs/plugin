@@ -202,12 +202,12 @@ Let's say we have various routes which need a "greeting" method. This functional
 const Plugin = require('@overlook/plugin'),
   { INIT_PROPS, INIT_ROUTE } = require('@overlook/route');
 
-const typePlugin = new Plugin(
+const greetingPlugin = new Plugin(
   { symbols: [ 'TYPE', 'GET_TYPE', 'GREETING' ] },
   extend
 } );
 
-const { TYPE, GET_TYPE, GREETING } = typePlugin;
+const { TYPE, GET_TYPE, GREETING } = greetingPlugin;
 
 function extend( Route ) (
   class extends Route {
@@ -235,11 +235,11 @@ function extend( Route ) (
 Now other plugins can extend off that:
 
 ```js
-const { GET_TYPE } = typePlugin;
+const { GET_TYPE } = greetingPlugin;
 
 const monkeyPlugin = new Plugin(
   Route => {
-    Route = Route.extend( typePlugin );
+    Route = Route.extend( greetingPlugin );
 
     return class extends Route {
       [GET_TYPE]() {
@@ -251,7 +251,7 @@ const monkeyPlugin = new Plugin(
 
 const zebraPlugin = new Plugin(
   Route => {
-    Route = Route.extend( typePlugin );
+    Route = Route.extend( greetingPlugin );
 
     return class extends Route {
       [GET_TYPE]() {
