@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.3.0
+
+Breaking changes:
+
+* Provide plugin dependencies with `extends` option
+
+Dev:
+
+* Update dev dependencies
+
+Docs:
+
+* Improve code examples
+* Fix whitespace
+* Consistent formatting
+
 ## 0.2.7
 
 Dependencies:
