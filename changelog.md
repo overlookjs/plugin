@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.4.1
+
+Dependencies:
+
+* Update `class-extension` dependency
+
+No code:
+
+* Fix lint errors
+
+Docs:
+
+* Correct changelog
+
 ## 0.4.0
 
 Breaking changes:
