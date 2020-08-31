@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@overlook/util-make-symbols": "^0.2.2",
-    "class-extension": "^0.3.2",
+    "class-extension": "^0.3.3",
     "is-it-type": "^5.0.0"
   },
   "devDependencies": {
