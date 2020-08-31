@@ -206,11 +206,9 @@ const greetingPlugin = new Plugin(
 Now other plugins can extend off that:
 
 ```js
-const { GET_TYPE } = greetingPlugin;
-
 const monkeyPlugin = new Plugin( {
   extends: [ greetingPlugin ],
-  extend: Route => class extends Route {
+  extend: ( Route, { GET_TYPE } ) => class extends Route {
     [GET_TYPE]() {
       return 'monkey';
     }
@@ -219,7 +217,7 @@ const monkeyPlugin = new Plugin( {
 
 const zebraPlugin = new Plugin( {
   extends: [ greetingPlugin ],
-  extend: Route => class extends Route {
+  extend: ( Route, { GET_TYPE } ) => class extends Route {
     [GET_TYPE]() {
       return 'zebra';
     }
@@ -235,6 +233,14 @@ const ZebraRoute = Route.extend( zebraPlugin );
 const zebra = new ZebraRoute();
 zebra[GREETNG]()
 // => 'Hello, I am a zebra.'
+```
+
+Plugins automatically inherit the Symbols (and any other properties) of the plugins they extend.
+
+Symbols a plugin defines must therefore not have name clashes with plugins they extend. An error will be thrown if this is the case.
+
+```js
+zebraPlugin.GREETING === greetingPlugin.GREETING // => true
 ```
 
 ### `isPlugin()` static method

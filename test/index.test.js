@@ -151,6 +151,65 @@ describe('creates symbols', () => {
 	});
 });
 
+describe('inherits properties of plugins it extends', () => {
+	it('directly', () => {
+		const plugin1 = new Plugin({symbols: ['FOO1']}, () => {});
+		const plugin2 = new Plugin({symbols: ['BAR1', 'BAR2']}, () => {});
+		const plugin = new Plugin({symbols: ['QUX1'], extends: [plugin1, plugin2]}, () => {});
+
+		const {FOO1, BAR1, BAR2, QUX1} = plugin;
+		expect(typeof FOO1).toBe('symbol');
+		expect(String(FOO1)).toBe('Symbol(FOO1)');
+		expect(FOO1).toBe(plugin1.FOO1);
+		expect(typeof BAR1).toBe('symbol');
+		expect(String(BAR1)).toBe('Symbol(BAR1)');
+		expect(BAR1).toBe(plugin2.BAR1);
+		expect(typeof BAR2).toBe('symbol');
+		expect(String(BAR2)).toBe('Symbol(BAR2)');
+		expect(BAR2).toBe(plugin2.BAR2);
+		expect(typeof QUX1).toBe('symbol');
+		expect(String(QUX1)).toBe('Symbol(QUX1)');
+	});
+
+	it('indirectly', () => {
+		const plugin1 = new Plugin({symbols: ['FOO1']}, () => {});
+		const plugin2 = new Plugin({symbols: ['BAR1', 'BAR2']}, () => {});
+		const plugin3 = new Plugin({symbols: ['QUX1'], extends: [plugin1, plugin2]}, () => {});
+		const plugin = new Plugin({extends: [plugin3]}, () => {});
+
+		const {FOO1, BAR1, BAR2, QUX1} = plugin;
+		expect(typeof FOO1).toBe('symbol');
+		expect(String(FOO1)).toBe('Symbol(FOO1)');
+		expect(FOO1).toBe(plugin1.FOO1);
+		expect(typeof BAR1).toBe('symbol');
+		expect(String(BAR1)).toBe('Symbol(BAR1)');
+		expect(BAR1).toBe(plugin2.BAR1);
+		expect(typeof BAR2).toBe('symbol');
+		expect(String(BAR2)).toBe('Symbol(BAR2)');
+		expect(BAR2).toBe(plugin2.BAR2);
+		expect(typeof QUX1).toBe('symbol');
+		expect(String(QUX1)).toBe('Symbol(QUX1)');
+		expect(QUX1).toBe(plugin3.QUX1);
+	});
+
+	describe('throws if property name clash', () => {
+		it('between extended and new', () => {
+			const plugin1 = new Plugin('foo', '1.0.0', {symbols: ['FOO']}, () => {});
+			expect(
+				() => new Plugin({symbols: ['FOO'], extends: [plugin1]}, () => {})
+			).toThrow(new Error("Symbol 'FOO' clashes with 'foo' plugin"));
+		});
+
+		it('between two extended plugins', () => {
+			const plugin1 = new Plugin('foo', '1.0.0', {symbols: ['FOO']}, () => {});
+			const plugin2 = new Plugin('bar', '2.0.0', {symbols: ['FOO']}, () => {});
+			expect(
+				() => new Plugin({extends: [plugin1, plugin2]}, () => {})
+			).toThrow(new Error("Property 'FOO' clash between 'foo' and 'bar' plugins"));
+		});
+	});
+});
+
 function makeCreateArgsFn(argsStr) {
 	// Work around `extends` being an illegal var name - prefix with '_'
 	argsStr = argsStr.replace(
