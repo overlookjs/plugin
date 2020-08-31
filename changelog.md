@@ -6,7 +6,7 @@ Breaking changes:
 
 * Plugins inherit Symbols from plugins they extend
 
-Deps:
+Dependencies:
 
 * Update `is-it-type` dependency
 
