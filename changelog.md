@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.4.0
+
+Breaking changes:
+
+* Plugins inherit Symbols from plugins they extend
+
+Deps:
+
+* Update `is-it-type` dependency
+
+Dev:
+
+* Update dev dependencies
+
 ## 0.3.0
 
 Breaking changes:
