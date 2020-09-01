@@ -65,7 +65,7 @@ mammalPlugin.GREETING = GREETING;
 
 New methods and properties should have Symbol keys, not strings. If properties are intended to be accessed by other plugins, or methods intended to be available for extending, the Symbol should be exported as a property of the `Plugin` object.
 
-The plugin can than be used create a subclass of a `Route` class, using `.extend()`:
+The plugin can then be used create a subclass of a `Route` class, using `.extend()`:
 
 ```js
 const Route = require('@overlook/route');
